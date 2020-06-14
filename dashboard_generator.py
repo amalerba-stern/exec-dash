@@ -43,3 +43,31 @@ for row in range(num_products):
 
 print("-----------------------")
 print("VISUALIZING THE DATA...")
+
+# https://plotly.com/python/horizontal-bar-charts/
+
+x = list(reversed(sales_by_product["sales price"].tolist()))
+y = list(reversed(sales_by_product.index.values.tolist()))
+# https://stackoverflow.com/questions/22341271/get-list-from-pandas-dataframe-column
+# https://dbader.org/blog/python-reverse-list#:~:text=Every%20list%20in%20Python%20has,modifies%20the%20original%20list%20object.
+# reverse order so that horizontal bar graph has top to bottom ordering
+
+list_sales = []
+for sale in x:
+    list_sales.append(to_usd(sale))
+
+bar = go.Bar(x = x, 
+             y = y,
+             text = list_sales, textposition = "auto",
+             orientation = "h"
+             )
+
+layout = go.Layout(title = f"Top-Selling Products ({year_month})",
+                   xaxis = dict({"title" : "Sales (USD)", 
+                                 "tickformat":"$"}),
+                   yaxis = dict({"title" : "Product"}))
+
+plotly.offline.plot({"data": bar, 
+                     "layout": layout},
+                    filename = "plot_top_selling_products.html",
+                    auto_open=True)
