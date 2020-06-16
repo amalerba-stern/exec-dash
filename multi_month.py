@@ -52,24 +52,18 @@ def num_sales(data):
 sales_data_2 = sorted(sales_data, key=num_sales)
 # sorted from least to most sales
 
-x = [data["sales"] for data in sales_data]
-y = [data["date"] for data in sales_data]
-print(x)
-print(y)
+y = [data["sales"] for data in sales_data]
+x = list(range(len(y)))
+x = [data["month_name"]+" "+data["year"] for data in sales_data]
+#y = [data["sales"] for data in sales_data]
 
-'''
-line = go.Line(x = [data["sales"] for data in sales_data], 
-               y = y,
-               text = list_sales, textposition = "auto"
-              )
+line = go.Line(x = x, y = y)
 
-layout = go.Layout(title = f"Top-Selling Products ({year_month})",
-                   xaxis = dict({"title" : "Sales (USD)", 
-                                 "tickformat":"$.2f"}),
+layout = go.Layout(title = f"Sales by Month",
+                   xaxis = dict({"title" : "Month"}),
                    yaxis = dict({"title" : "Product"}))
 
-plotly.offline.plot({"data": bar, 
+plotly.offline.plot({"data": line, 
                      "layout": layout},
-                    filename = "plot_top_selling_products.html",
+                    filename = "monthly_sales_over_time.html",
                     auto_open=True)
-'''
