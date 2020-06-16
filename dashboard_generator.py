@@ -18,6 +18,7 @@ def to_usd(my_price):
     """
     return f"${my_price:,.2f}"
 
+# Prompt user for desired month of sales data
 while True:
     date = input("Please enter the month you want sales data for as YYYYMM:")
 
@@ -33,6 +34,7 @@ while True:
         print(data_year, data_month)
         break
 
+# open file
 date_filename = f"data/monthly-sales/sales-{date}.csv"
 data = pandas.read_csv(date_filename) 
 

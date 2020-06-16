@@ -49,11 +49,31 @@ for file in files:
 def num_sales(data):
     return data["sales"]
 
-sales_data_2 = sorted(sales_data, key=num_sales)
+print("-----------------------")
+print("CRUNCHING THE DATA...")
+
+sales_data_2 = sorted(sales_data, key=num_sales, reverse=True)
 # sorted from least to most sales
 
+print("-----------------------")
+print("SALES BY MONTH OVER TIME...")
+
+for row in range(len(sales_data)):
+    month_name = [s["month_name"] for s in sales_data][row]
+    year = [s["year"] for s in sales_data][row]
+    sales = to_usd([s["sales"] for s in sales_data][row])
+    print(f"{month_name} {year} ({sales})")
+
+print("-----------------------")
+print("SALES BY MONTH BY AMOUNT OF SALES...")
+
+for row in range(len(sales_data_2)):
+    month_name = [s["month_name"] for s in sales_data_2][row]
+    year = [s["year"] for s in sales_data_2][row]
+    sales = to_usd([s["sales"] for s in sales_data_2][row])
+    print(f"{month_name} {year} ({sales})")
+
 y = [data["sales"] for data in sales_data]
-x = list(range(len(y)))
 x = [data["month_name"]+" "+data["year"] for data in sales_data]
 #y = [data["sales"] for data in sales_data]
 
@@ -61,7 +81,8 @@ line = go.Line(x = x, y = y)
 
 layout = go.Layout(title = f"Sales by Month",
                    xaxis = dict({"title" : "Month"}),
-                   yaxis = dict({"title" : "Product"}))
+                   yaxis = dict({"title" : "Sales (USD)", 
+                                 "tickformat":"$.2f"}))
 
 plotly.offline.plot({"data": line, 
                      "layout": layout},

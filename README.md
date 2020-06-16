@@ -1,2 +1,5 @@
 # exec-dash
-Executive dashboard project
+# Executive dashboard project
+
+# Packages
+pip install -r requirements.txt
