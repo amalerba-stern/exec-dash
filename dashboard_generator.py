@@ -2,6 +2,8 @@
 
 import pandas
 import csv
+import os
+from os import listdir
 import plotly
 import plotly.graph_objs as go
 
@@ -16,11 +18,40 @@ def to_usd(my_price):
     """
     return f"${my_price:,.2f}"
 
-data = pandas.read_csv("data/monthly-sales/sales-201803.csv") 
-#need to make more dynamic
+while True:
+    date = input("Please enter the month you want sales data for as YYYYMM:")
+
+    # Check validity of dates
+    data_dir = "data/monthly-sales"
+    files = [file[6:12] for file in listdir(data_dir)]
+
+    if date not in files:
+        print("This is not a valid input. Your input must be one of the following:", files)
+    else:
+        data_year = date[0:4]
+        data_month = date[4:6]
+        print(data_year, data_month)
+        break
+
+date_filename = f"data/monthly-sales/sales-{date}.csv"
+data = pandas.read_csv(date_filename) 
+
+month_dict = [{"num":1, "name":"January"}, 
+              {"num":2, "name":"February"}, 
+              {"num":3, "name":"March"}, 
+              {"num":4, "name":"April"}, 
+              {"num":5, "name":"May"}, 
+              {"num":6, "name":"June"}, 
+              {"num":7, "name":"July"}, 
+              {"num":8, "name":"August"}, 
+              {"num":9, "name":"September"}, 
+              {"num":10, "name":"October"}, 
+              {"num":11, "name":"November"}, 
+              {"num":12, "name":"December"}]
+month_name = [month["name"] for month in month_dict if month["num"] == int(data_month)][0]
 
 print("-----------------------")
-year_month = "March 2018" # MAKE DYNAMIC
+year_month = f"{month_name} {data_year}"
 print(f"MONTH: {year_month}")
 
 print("-----------------------")
@@ -64,7 +95,7 @@ bar = go.Bar(x = x,
 
 layout = go.Layout(title = f"Top-Selling Products ({year_month})",
                    xaxis = dict({"title" : "Sales (USD)", 
-                                 "tickformat":"$"}),
+                                 "tickformat":"$.2f"}),
                    yaxis = dict({"title" : "Product"}))
 
 plotly.offline.plot({"data": bar, 
