@@ -1,4 +1,2 @@
-pip install pandas
-pip install csv
-pip install os
-pip install plotly
+pandas
+plotly
